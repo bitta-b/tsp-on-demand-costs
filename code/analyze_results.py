@@ -1,5 +1,6 @@
 import csv
 from pathlib import Path
+from verify_results import check_results, read_csv
 
 ROOT = Path(__file__).resolve().parents[1]
 DATA = ROOT / "results"
@@ -8,9 +9,12 @@ LABELS = ["Single-start relocation", "Multistart relocation", "Multistart + Or-o
 
 
 def load():
+    measured, _ = check_results()
     with (DATA / "comparison.csv").open(newline="", encoding="utf8") as file:
         rows = list(csv.DictReader(file))
-    return {(int(r["cities"]), r["method"]): r for r in rows}
+    original = {(int(r["cities"]), r["method"]): r for r in rows}
+    original.update(measured)
+    return original
 
 
 def value(row, key):
@@ -56,9 +60,8 @@ def show_table(d):
 def make_charts(d):
     try:
         import matplotlib.pyplot as plt
-    except ImportError:
-        print("\nFor charts, install Matplotlib: python -m pip install matplotlib")
-        return
+    except (ImportError, OSError) as error:
+        raise SystemExit("Cannot load Matplotlib. Use the project virtual environment and install the versions in requirements.txt") from error
     charts = DATA / "charts"
     charts.mkdir(exist_ok=True)
 
@@ -81,10 +84,10 @@ def make_charts(d):
     ax.axhline(0, linewidth=.8, alpha=.35)
     ax.set_xlim(14, 51);ax.set_ylim(-24, 20)
     ax.set_xlabel("Actual directed cost entries retrieved (% of matrix)")
-    ax.set_ylabel("Mean tour-cost reduction vs single-start (%)")
-    ax.set_title("100 cities: Does retrieving more costs improve the tour?")
+    ax.set_ylabel("Mean paired relative tour-cost reduction vs single-start (%)")
+    ax.set_title("100 cities: Tour quality vs retrieved costs")
     ax.grid(alpha=.17)
-    fig.text(.5,.02,"40 pairs for first three methods; 38 for stem-and-cycle. Ant colony: no completed 100-city runs.",ha="center",fontsize=9)
+    fig.text(.5,.02,"Same inputs: 40 for C/M/MO; 38 completed for DR. ACS had no completed 100-city runs.",ha="center",fontsize=9)
     fig.tight_layout(rect=[0,.05,1,1])
     fig.savefig(charts / "cost_vs_queries.png", dpi=170)
     plt.close(fig)
@@ -99,7 +102,13 @@ def make_charts(d):
     ax.set_title("80 small instances: How close are the tours to optimal?")
     ax.grid(axis='y',alpha=.17)
     ax.set_axisbelow(True)
-    fig.text(.5,.02,"40 instances with 15 cities + 40 with 16 cities; lower is better.",ha="center",fontsize=9)
+    records = read_csv("all_runs.csv")
+    max_gaps = [max(float(r["gap_exact_pct"]) for r in records if
+                r["method"] == code and r["role"] == "historical_control" and
+                r["status"] == "VERIFIED" and int(r["n"]) in (15, 16))
+                for code in ("C", "M", "MO")]
+    fig.text(.5,.02, f"80 certified small instances. Worst observed gaps: C {max_gaps[0]:.1f}%, "
+             f"M {max_gaps[1]:.1f}%, MO {max_gaps[2]:.1f}%.", ha="center",fontsize=9)
     fig.tight_layout(rect=[0,.05,1,1])
     fig.savefig(charts / "optimality_gap.png", dpi=170)
     plt.close(fig)
@@ -111,7 +120,7 @@ def make_charts(d):
         ax.text(b.get_x()+b.get_width()/2,t+.055,f"{t:.2f} s",ha="center",fontsize=12)
     ax.set_ylim(0,max(values)*1.22)
     ax.set_ylabel("Median algorithm CPU time (seconds)")
-    ax.set_title("100 cities: What is the computation cost?")
+    ax.set_title("100 cities: Median algorithm CPU time")
     ax.grid(axis='y',alpha=.17)
     ax.set_axisbelow(True)
     fig.text(.5,.02,"Same historical execution environment; 40 instances for each method.",ha="center",fontsize=9)

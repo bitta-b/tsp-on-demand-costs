@@ -89,6 +89,7 @@ def main():
         parser.error("ACS needs at least 10 cities in this implementation")
     results = run(instance, seed=args.seed if args.seed is not None else 7, methods=selected)
     base = next((r for r in results if r["method"] == "C"), None)
+    print("DEMONSTRATION ONLY: this is not the 200-instance historical benchmark")
     print(f"Cities={instance['n']}; family={instance.get('family', 'saved')}; scenario={instance.get('scenario', 'saved')}")
     print("Q=distinct acquired directed OD; travel cost is in seconds, wall/CPU measure local execution")
     for r in results:

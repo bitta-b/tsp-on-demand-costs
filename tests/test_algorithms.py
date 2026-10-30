@@ -68,6 +68,32 @@ class TestAlgorithms(unittest.TestCase):
                 self.assertEqual(len(runs), 40)
                 self.assertTrue(all(r["status"] == "VERIFIED" for r in runs))
 
+    def test_study_summaries_match_raw_records(self):
+        from verify_results import check_results
+        summaries, records = check_results()
+        self.assertEqual(len(summaries), 25)
+        self.assertEqual(len(records), 1804)
+
+    def test_original_study_inputs(self):
+        from verify_results import check_results, check_inputs
+        _, records = check_results()
+        check_inputs(records)
+
+    def test_one_original_study_instance_replays(self):
+        import csv
+        import zipfile
+        name = "P4B_clustered_corridors_s4974870_n15"
+        with zipfile.ZipFile(ROOT / "examples" / "historical_inputs.zip") as archive:
+            instance = json.loads(gzip.decompress(archive.read(name + ".json.gz")))
+        with (ROOT / "results" / "all_runs.csv").open(newline="", encoding="utf8") as f:
+            records = list(csv.DictReader(f))
+        expected = {r["method"]: r for r in records if r["instance_id"] == name and
+                    r["method"] in ("C", "M", "MO") and r["role"] == "historical_control"}
+        for item in run(instance, methods=["C", "M", "MO"]):
+            record = expected[item["method"]]
+            self.assertEqual(item["cost"], int(float(record["actual_cost_ticks"])))
+            self.assertEqual(item["unique_od"], int(float(record["Q_acquired"])))
+
     def test_network_generator(self):
         from generate_networks import generate_example
         instance = generate_example(7, 15)

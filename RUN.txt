@@ -1,0 +1,29 @@
+TSP Heuristics with On-Demand Cost Queries
+
+All experiments use an OFFLINE cost oracle, not live routing APIs.
+The historical inputs are synthetic directed road-network problems.
+
+Windows, from the repository folder:
+  py -3.12 -m venv .venv
+  .\.venv\Scripts\python.exe -m pip install -r requirements.txt
+  .\.venv\Scripts\python.exe -B -m unittest discover -s tests -v
+  .\.venv\Scripts\python.exe -B code\analyze_results.py
+  .\.venv\Scripts\python.exe -B code\verify_results.py --replay sample
+  .\.venv\Scripts\python.exe -B code\run_experiments.py
+
+For a longer C/M/MO replay of ALL 200 original study inputs:
+  .\.venv\Scripts\python.exe -B code\verify_results.py --replay all
+
+The replay verifies actual tour cost and unique acquired directed OD against saved results.
+CPU/wall times vary between machines. ACS and DR-core historical runs are NOT
+reproduced by this replay; their completion/timeout records are audited separately.
+The default run_experiments.py uses faster DEMO settings, not registered historical settings.
+Original historical records are in results/all_runs.csv. They have not been regenerated.
+Exact optimality is certified only for problems with 15 or 16 cities.
+No HTTP latency, API charges or comparable all-method memory results were measured.
+
+C/M/MO use established insertion, relocation, multistart and Or-opt ideas.
+ACS adapts Dorigo & Gambardella (1997), DOI: 10.1109/4235.585892.
+DR-core adapts Rego, Gamboa & Glover (2016), DOI: 10.1002/net.21676;
+it omits the original Double-Bridge stage. It is not the full published solver.
+The GitHub package is an analysis/replay companion, not a live API implementation.
