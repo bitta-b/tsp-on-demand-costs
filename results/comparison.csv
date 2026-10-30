@@ -1,0 +1,36 @@
+cities,method,completed,timeouts,not_run,mean_od_percent,cost_change_vs_baseline_percent,exact_gap_percent,median_cpu_seconds,cpu_timing_source
+15,Cheapest insertion + relocation,40,0,0,99.17857142857142,0.0,16.685787476706274,0.003166293500044,matched baseline experiments
+15,Multistart cheapest insertion + relocation,40,0,0,99.76190476190476,-7.299149712942301,4.514748046960211,0.0166161605000354,matched baseline experiments
+15,Multistart cheapest insertion + Or-opt,40,0,0,99.98809523809524,-9.54835953192552,0.45900079402630745,0.03887961899999935,matched baseline experiments
+15,Exhaustive relocation,40,0,0,100.0,0.0,16.685787476706274,0.0036255985000933997,matched baseline experiments
+15,Ant colony system,103,17,0,100.0,-11.069598353697934,0.27232530129338894,9.987525009,separate instrumented experiments
+15,Doubly-rooted stem-and-cycle,40,0,0,95.32142857142857,2.693902449511296,15.874941264251541,0.5300424244999999,separate instrumented experiments
+15,Geometric nearest neighbor,40,0,0,7.142857142857143,13.589206836016857,28.114591505279225,0.0043495389999999995,separate instrumented experiments
+16,Cheapest insertion + relocation,40,0,0,97.23958333333333,0.0,16.029040607370984,0.0037981040000261,matched baseline experiments
+16,Multistart cheapest insertion + relocation,40,0,0,99.20833333333333,-9.347041778505163,0.42041740230368385,0.0170539960000155,matched baseline experiments
+16,Multistart cheapest insertion + Or-opt,40,0,0,99.82291666666666,-9.486756011517798,0.26933259474475724,0.042112607499973295,matched baseline experiments
+16,Exhaustive relocation,40,0,0,100.0,0.0,16.029040607370984,0.004138233500000799,matched baseline experiments
+16,Ant colony system,63,57,0,100.0,-11.163388370996707,0.25992248174680527,11.836158887000002,separate instrumented experiments
+16,Doubly-rooted stem-and-cycle,40,0,0,94.07291666666666,4.831484867319679,16.53237325191899,0.49673847000000004,separate instrumented experiments
+16,Geometric nearest neighbor,40,0,0,6.666666666666667,17.05867879296424,30.312114869493747,0.0043721795000000035,separate instrumented experiments
+20,Cheapest insertion + relocation,40,0,0,84.125,0.0,,0.00570619449999295,matched baseline experiments
+20,Multistart cheapest insertion + relocation,40,0,0,91.17763157894737,-9.646323932990882,,0.02783402800002925,matched baseline experiments
+20,Multistart cheapest insertion + Or-opt,40,0,0,95.89473684210526,-10.219124895759222,,0.06619796799992625,matched baseline experiments
+20,Exhaustive relocation,40,0,0,100.0,0.0,,0.0071242030000178,matched baseline experiments
+20,Ant colony system,0,120,0,,,,,
+20,Doubly-rooted stem-and-cycle,40,0,0,89.38815789473685,6.053775640918175,,0.6572612325,separate instrumented experiments
+20,Geometric nearest neighbor,40,0,0,5.2631578947368425,14.792530554218663,,0.004812815499999998,separate instrumented experiments
+50,Cheapest insertion + relocation,40,0,0,35.6,0.0,,0.04208068650001445,matched baseline experiments
+50,Multistart cheapest insertion + relocation,40,0,0,43.25612244897959,-9.784033349207458,,0.2015890995001825,matched baseline experiments
+50,Multistart cheapest insertion + Or-opt,40,0,0,53.94795918367347,-11.823664341241274,,0.43234975100000383,matched baseline experiments
+50,Exhaustive relocation,40,0,0,100.0,-1.1404587432440942,,0.07205068049998335,matched baseline experiments
+50,Ant colony system,0,12,108,,,,,
+50,Doubly-rooted stem-and-cycle,40,0,0,62.24387755102041,20.683685326632165,,1.6395078415,separate instrumented experiments
+50,Geometric nearest neighbor,40,0,0,2.0408163265306123,31.083312720474556,,0.006763087500000001,separate instrumented experiments
+100,Cheapest insertion + relocation,40,0,0,18.71792929292929,0.0,,0.2800386189999955,matched baseline experiments
+100,Multistart cheapest insertion + relocation,40,0,0,23.40176767676768,-11.064114494357089,,1.5010714300000103,matched baseline experiments
+100,Multistart cheapest insertion + Or-opt,40,0,0,31.7530303030303,-13.468680794569106,,2.7364402820001033,matched baseline experiments
+100,Exhaustive relocation,40,0,0,100.0,-1.0862399144787134,,0.5089509244999988,matched baseline experiments
+100,Ant colony system,0,0,120,,,,,
+100,Doubly-rooted stem-and-cycle,38,2,0,42.83439659755449,18.21226380121132,,6.9928297285,separate instrumented experiments
+100,Geometric nearest neighbor,40,0,0,1.0101010101010102,29.086114608458878,,0.012470852999999997,separate instrumented experiments

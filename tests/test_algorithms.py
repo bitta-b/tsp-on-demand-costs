@@ -56,6 +56,18 @@ class TestAlgorithms(unittest.TestCase):
         self.assertEqual([r["calls"] for r in results[:3]],
             [1527+15,8085+15,19947+15])
 
+    def test_historical_results(self):
+        import csv
+        with (ROOT / "results" / "all_runs.csv").open(newline="", encoding="utf8") as file:
+            records = list(csv.DictReader(file))
+        self.assertEqual(len(records), 1804)
+        self.assertEqual(len({r["instance_id"] for r in records}), 200)
+        for n in (15, 16, 20, 50, 100):
+            for method in ("C", "M", "MO", "D"):
+                runs = [r for r in records if r["method"] == method and int(r["n"]) == n]
+                self.assertEqual(len(runs), 40)
+                self.assertTrue(all(r["status"] == "VERIFIED" for r in runs))
+
     def test_network_generator(self):
         from generate_networks import generate_example
         instance = generate_example(7, 15)
